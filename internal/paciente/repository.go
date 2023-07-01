@@ -5,7 +5,7 @@ import (
 	"strconv"
 
 	"github.com/zoezn/Final-go/internal/domain"
-	"github.com/zoezn/Final-go/pkg/paciente"
+	"github.com/zoezn/Final-go/pkg/storePaciente"
 )
 
 type Repository interface {
@@ -20,11 +20,11 @@ type Repository interface {
 }
 
 type repository struct {
-	storage paciente.PacienteInterface
+	storage storePaciente.PacienteInterface
 }
 
 // NewRepository crea un nuevo repositorio
-func NewRepository(storage paciente.PacienteInterface) Repository {
+func NewRepository(storage storePaciente.PacienteInterface) Repository {
 	return &repository{storage}
 }
 

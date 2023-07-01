@@ -1,4 +1,4 @@
-package paciente
+package storePaciente
 
 import (
 	"github.com/zoezn/Final-go/internal/domain"

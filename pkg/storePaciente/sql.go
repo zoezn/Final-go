@@ -1,4 +1,4 @@
-package paciente
+package storePaciente
 
 import (
 	"database/sql"
@@ -18,25 +18,25 @@ func NewSqlStore(db *sql.DB) PacienteInterface {
 }
 
 func (s *SqlStore) Read(id int) (domain.Paciente, error) {
-	var productReturn domain.Paciente
+	var pacienteReturn domain.Paciente
 
 	query := "SELECT * FROM pacientes WHERE id = ?;"
 	row := s.DB.QueryRow(query, id)
-	err := row.Scan(&productReturn.Id, &productReturn.Nombre, &productReturn.Apellido, &productReturn.Id)
+	err := row.Scan(&pacienteReturn.Id, &pacienteReturn.Nombre, &pacienteReturn.Apellido, &pacienteReturn.Domicilio, &pacienteReturn.DNI, &pacienteReturn.Alta)
 	if err != nil {
 		return domain.Paciente{}, err
 	}
-	return productReturn, nil
+	return pacienteReturn, nil
 }
 
-func (s *SqlStore) Create(product domain.Paciente) error {
-	query := "INSERT INTO pacientes (Apellido, Nombre, Id) VALUES (?, ?, ?);"
+func (s *SqlStore) Create(paciente domain.Paciente) error {
+	query := "INSERT INTO pacientes (nombre, apellido, domicilio, dni, alta) VALUES (?, ?, ?, ?, ?);"
 	stmt, err := s.DB.Prepare(query)
 	if err != nil {
 		return err
 	}
 
-	res, err := stmt.Exec(product.Apellido, product.Nombre, product.Id)
+	res, err := stmt.Exec(paciente.Nombre, paciente.Apellido, paciente.Domicilio, paciente.DNI, paciente.Alta)
 	if err != nil {
 		return err
 	}
@@ -47,12 +47,12 @@ func (s *SqlStore) Create(product domain.Paciente) error {
 	}
 
 	lid, _ := res.LastInsertId()
-	product.Id = int(lid)
-	fmt.Println(product)
+	paciente.Id = int(lid)
+	fmt.Println(paciente)
 	return nil
 }
 
-func (s *SqlStore) Update(product domain.Paciente) error {
+func (s *SqlStore) Update(paciente domain.Paciente) error {
 	return nil
 }
 

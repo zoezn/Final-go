@@ -28,8 +28,8 @@ paciente_id INT NOT NULL,
 fecha CHAR(8) NOT NULL,
 hora CHAR(5) NOT NULL,
 descripcion VARCHAR(255),
-CONSTRAINT fk_dentista foreign key (dentista_id) references dentista (id),
-CONSTRAINT fk_paciente foreign key (paciente_id) references paciente (id)
+CONSTRAINT fk_dentistas foreign key (dentista_id) references dentistas (id),
+CONSTRAINT fk_pacientes foreign key (paciente_id) references pacientes (id)
 );
 
 INSERT INTO dentistas VALUES (default, "Zoe", "Jimenez", "123456789");

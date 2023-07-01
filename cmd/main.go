@@ -9,7 +9,9 @@ import (
 	"github.com/joho/godotenv"
 	"github.com/zoezn/Final-go/cmd/server/handler"
 	"github.com/zoezn/Final-go/internal/dentista"
+	"github.com/zoezn/Final-go/internal/paciente"
 	"github.com/zoezn/Final-go/pkg/store"
+	"github.com/zoezn/Final-go/pkg/storePaciente"
 )
 
 func main() {
@@ -19,8 +21,10 @@ func main() {
 	}
 	// storage := store.NewJsonStore("./dentistas.json")
 
-	// db, err := sql.Open("mysql", "user1:secret_password@/my_db")
-	db, err := sql.Open("mysql", "root:1234@/final_go")
+	// credenciales zoe
+	// db, err := sql.Open("mysql", "root:1234@/final_go_zt")
+	// credenciales tomi
+	db, err := sql.Open("mysql", "root:root@/final_go_zt")
 
 	if err != nil {
 		panic(err.Error())
@@ -32,10 +36,15 @@ func main() {
 	}
 
 	storage := store.NewSqlStore(db)
+	pacienteDB := storePaciente.NewSqlStore(db)
 
-	repo := dentista.NewRepository(storage)
-	service := dentista.NewService(repo)
-	dentistaHandler := handler.NewDentistaHandler(service)
+	dentistaRepository := dentista.NewRepository(storage)
+	dentistaService := dentista.NewService(dentistaRepository)
+	dentistaHandler := handler.NewDentistaHandler(dentistaService)
+
+	pacienteRepository := paciente.NewRepository(pacienteDB)
+	pacienteService := paciente.NewService(pacienteRepository)
+	pacienteHandler := handler.NewPacienteHandler(pacienteService)
 
 	r := gin.Default()
 
@@ -47,6 +56,15 @@ func main() {
 		dentistas.DELETE(":id", dentistaHandler.Delete())
 		dentistas.PATCH(":id", dentistaHandler.Patch())
 		dentistas.PUT(":id", dentistaHandler.Put())
+	}
+
+	pacientes := r.Group("/pacientes")
+	{
+		pacientes.GET(":id", pacienteHandler.GetByID())
+		pacientes.POST("", pacienteHandler.Post())
+		pacientes.DELETE(":id", pacienteHandler.Delete())
+		pacientes.PATCH(":id", pacienteHandler.Patch())
+		pacientes.PUT(":id", pacienteHandler.Put())
 	}
 
 	r.Run(":8080")
