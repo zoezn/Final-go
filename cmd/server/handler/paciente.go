@@ -21,6 +21,7 @@ func NewPacienteHandler(s paciente.PacienteService) *pacienteHandler {
 	}
 }
 
+// supuestamente esto es para documentar swagger
 func (h *pacienteHandler) GetByID() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		idParam := c.Param("id")
