@@ -6,7 +6,7 @@ import (
 	"github.com/zoezn/Final-go/internal/domain"
 )
 
-type Service interface {
+type PacienteService interface {
 	// GetByID busca un paciente por su id
 	GetByID(id int) (domain.Paciente, error)
 	// Create agrega un nuevo paciente
@@ -22,7 +22,7 @@ type service struct {
 }
 
 // NewService crea un nuevo servicio
-func NewService(r Repository) Service {
+func NewService(r Repository) PacienteService {
 	return &service{r}
 }
 
