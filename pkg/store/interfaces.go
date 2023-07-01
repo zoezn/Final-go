@@ -12,14 +12,6 @@ type StoreInterface interface {
 	Exists(codeValue string) bool
 }
 
-type PacienteInterface interface {
-	Read(id int) (domain.Paciente, error)
-	Create(product domain.Paciente) error
-	Update(product domain.Paciente) error
-	Delete(id int) error
-	Exists(codeValue string) bool
-}
-
 type TurnoInterface interface {
 	Read(id int) (domain.Turno, error)
 	Create(product domain.Turno) error

@@ -1,4 +1,4 @@
-package store
+package paciente
 
 import (
 	"database/sql"
@@ -11,32 +11,32 @@ type SqlStore struct {
 	DB *sql.DB
 }
 
-func NewSqlStore(db *sql.DB) StoreInterface {
+func NewSqlStore(db *sql.DB) PacienteInterface {
 	return &SqlStore{
 		DB: db,
 	}
 }
 
-func (s *SqlStore) Read(id int) (domain.Dentista, error) {
-	var productReturn domain.Dentista
+func (s *SqlStore) Read(id int) (domain.Paciente, error) {
+	var productReturn domain.Paciente
 
-	query := "SELECT * FROM dentistas WHERE id = ?;"
+	query := "SELECT * FROM pacientes WHERE id = ?;"
 	row := s.DB.QueryRow(query, id)
-	err := row.Scan(&productReturn.Id, &productReturn.Nombre, &productReturn.Apellido, &productReturn.Matricula)
+	err := row.Scan(&productReturn.Id, &productReturn.Nombre, &productReturn.Apellido, &productReturn.Id)
 	if err != nil {
-		return domain.Dentista{}, err
+		return domain.Paciente{}, err
 	}
 	return productReturn, nil
 }
 
-func (s *SqlStore) Create(product domain.Dentista) error {
-	query := "INSERT INTO dentistas (Apellido, Nombre, Matricula) VALUES (?, ?, ?);"
+func (s *SqlStore) Create(product domain.Paciente) error {
+	query := "INSERT INTO pacientes (Apellido, Nombre, Id) VALUES (?, ?, ?);"
 	stmt, err := s.DB.Prepare(query)
 	if err != nil {
 		return err
 	}
 
-	res, err := stmt.Exec(product.Apellido, product.Nombre, product.Matricula)
+	res, err := stmt.Exec(product.Apellido, product.Nombre, product.Id)
 	if err != nil {
 		return err
 	}
@@ -52,7 +52,7 @@ func (s *SqlStore) Create(product domain.Dentista) error {
 	return nil
 }
 
-func (s *SqlStore) Update(product domain.Dentista) error {
+func (s *SqlStore) Update(product domain.Paciente) error {
 	return nil
 }
 
@@ -61,7 +61,7 @@ func (s *SqlStore) Delete(id int) error {
 	if err != nil {
 		return err
 	}
-	query := "DELETE FROM dentistas WHERE id = ?;"
+	query := "DELETE FROM pacientes WHERE id = ?;"
 	stmt, err := s.DB.Prepare(query)
 	if err != nil {
 		return err
@@ -85,7 +85,7 @@ func (s *SqlStore) Exists(codeValue string) bool {
 	var exist bool
 	var id int
 
-	query := "SELECT * FROM dentistas WHERE code_value = ?;"
+	query := "SELECT * FROM pacientes WHERE code_value = ?;"
 	row := s.DB.QueryRow(query, id)
 	err := row.Scan(&id)
 	if err != nil {
