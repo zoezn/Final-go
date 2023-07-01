@@ -32,7 +32,7 @@ func (h *pacienteHandler) GetByID() gin.HandlerFunc {
 		}
 		paciente, err := h.s.GetByID(id)
 		if err != nil {
-			web.Failure(c, 404, errors.New("paciente not found"))
+			web.Failure(c, 404, errors.New("Paciente not found"))
 			return
 		}
 		web.Success(c, 200, paciente)
@@ -129,7 +129,7 @@ func (h *pacienteHandler) Put() gin.HandlerFunc {
 		}
 		_, err = h.s.GetByID(id)
 		if err != nil {
-			web.Failure(c, 404, errors.New("paciente not found"))
+			web.Failure(c, 404, errors.New("Paciente not found"))
 			return
 		}
 		if err != nil {
@@ -185,7 +185,7 @@ func (h *pacienteHandler) Patch() gin.HandlerFunc {
 		}
 		_, err = h.s.GetByID(id)
 		if err != nil {
-			web.Failure(c, 404, errors.New("paciente not found"))
+			web.Failure(c, 404, errors.New("Paciente not found"))
 			return
 		}
 		if err := c.ShouldBindJSON(&r); err != nil {

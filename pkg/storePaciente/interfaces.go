@@ -9,5 +9,5 @@ type PacienteInterface interface {
 	Create(product domain.Paciente) error
 	Update(product domain.Paciente) error
 	Delete(id int) error
-	Exists(codeValue string) bool
+	Exists(id int) bool
 }
