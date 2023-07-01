@@ -12,9 +12,9 @@ type Repository interface {
 	// GetByID busca un Turno por su id
 	GetByID(id int) (domain.Turno, error)
 	// Create agrega un nuevo Turno
-	Create(p domain.Turno) (domain.Turno, error)
+	Create(t domain.Turno) (domain.Turno, error)
 	// Update actualiza un Turno
-	Update(id int, p domain.Turno) (domain.Turno, error)
+	Update(id int, t domain.Turno) (domain.Turno, error)
 	// Delete elimina un Turno
 	Delete(id int) error
 }
@@ -56,13 +56,13 @@ func (r *repository) Delete(id int) error {
 	return nil
 }
 
-func (r *repository) Update(id int, p domain.Turno) (domain.Turno, error) {
-	if r.storage.Exists(strconv.Itoa(p.DNI)) {
+func (r *repository) Update(id int, t domain.Turno) (domain.Turno, error) {
+	if r.storage.Exists(strconv.Itoa(t.Id)) {
 		return domain.Turno{}, errors.New("dni already exists")
 	}
-	err := r.storage.Update(p)
+	err := r.storage.Update(t)
 	if err != nil {
 		return domain.Turno{}, errors.New("error updating Turno")
 	}
-	return p, nil
+	return t, nil
 }

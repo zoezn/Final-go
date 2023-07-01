@@ -1,70 +1,67 @@
 package turno
 
 import (
-	"strconv"
-
 	"github.com/zoezn/Final-go/internal/domain"
 )
 
 type Service interface {
-	// GetByID busca un paciente por su id
-	GetByID(id int) (domain.Paciente, error)
-	// Create agrega un nuevo paciente
-	Create(p domain.Paciente) (domain.Paciente, error)
-	// Delete elimina un paciente
+	GetByID(id int) (domain.Turno, error)
+	Create(p domain.Turno) (domain.Turno, error)
 	Delete(id int) error
-	// Update actualiza un paciente
-	Update(id int, p domain.Paciente) (domain.Paciente, error)
+	Update(id int, p domain.Turno) (domain.Turno, error)
 }
 
 type service struct {
 	r Repository
 }
 
-// NewService crea un nuevo servicio
 func NewService(r Repository) Service {
 	return &service{r}
 }
 
-func (s *service) GetByID(id int) (domain.Paciente, error) {
-	p, err := s.r.GetByID(id)
+func (s *service) GetByID(id int) (domain.Turno, error) {
+	t, err := s.r.GetByID(id)
 	if err != nil {
-		return domain.Paciente{}, err
+		return domain.Turno{}, err
 	}
-	return p, nil
+	return t, nil
 }
 
-func (s *service) Create(p domain.Paciente) (domain.Paciente, error) {
-	p, err := s.r.Create(p)
+func (s *service) Create(t domain.Turno) (domain.Turno, error) {
+	turno, err := s.r.Create(t)
 	if err != nil {
-		return domain.Paciente{}, err
+		return domain.Turno{}, err
 	}
-	return p, nil
+	return turno, nil
 }
-func (s *service) Update(id int, u domain.Paciente) (domain.Paciente, error) {
-	p, err := s.r.GetByID(id)
+func (s *service) Update(id int, u domain.Turno) (domain.Turno, error) {
+	t, err := s.r.GetByID(id)
 	if err != nil {
-		return domain.Paciente{}, err
+		return domain.Turno{}, err
 	}
-	if u.Nombre != "" {
-		p.Nombre = u.Nombre
+	if t.Paciente != (domain.Paciente{}) {
+		t.Paciente = u.Paciente
 	}
-	if u.Apellido != "" {
-		p.Apellido = u.Apellido
+	if u.Dentista != (domain.Dentista{}) {
+		t.Dentista = u.Dentista
 	}
-	if u.Domicilio != "" {
-		p.Domicilio = u.Domicilio
+	if u.Fecha != "" {
+		t.Fecha = u.Fecha
 	}
 
-	if strconv.Itoa(u.DNI) != "" {
-		p.DNI = u.DNI
+	if u.Hora != "" {
+		t.Hora = u.Hora
 	}
 
-	p, err = s.r.Update(id, p)
-	if err != nil {
-		return domain.Paciente{}, err
+	if u.Descripcion != "" {
+		t.Descripcion = u.Descripcion
 	}
-	return p, nil
+
+	tUpd, err := s.r.Update(id, t)
+	if err != nil {
+		return domain.Turno{}, err
+	}
+	return tUpd, nil
 }
 
 func (s *service) Delete(id int) error {
