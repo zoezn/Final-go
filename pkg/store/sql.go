@@ -57,6 +57,27 @@ func (s *SqlStore) Update(product domain.Dentista) error {
 }
 
 func (s *SqlStore) Delete(id int) error {
+	d, err := s.Read(id)
+	if err != nil {
+		return err
+	}
+	query := "DELETE FROM dentista WHERE id = ?;"
+	stmt, err := s.DB.Prepare(query)
+	if err != nil {
+		return err
+	}
+
+	res, err := stmt.Exec(id)
+	if err != nil {
+		return err
+	}
+
+	_, err = res.RowsAffected()
+	if err != nil {
+		return err
+	}
+
+	fmt.Println(d)
 	return nil
 }
 
@@ -64,7 +85,7 @@ func (s *SqlStore) Exists(codeValue string) bool {
 	var exist bool
 	var id int
 
-	query := "SELECT id FROM dentista WHERE code_value = ?;"
+	query := "SELECT * FROM dentista WHERE code_value = ?;"
 	row := s.DB.QueryRow(query, id)
 	err := row.Scan(&id)
 	if err != nil {
