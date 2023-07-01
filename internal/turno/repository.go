@@ -1,0 +1,68 @@
+package turno
+
+import (
+	"errors"
+	"strconv"
+
+	"github.com/zoezn/Final-go/internal/domain"
+	"github.com/zoezn/Final-go/pkg/store"
+)
+
+type Repository interface {
+	// GetByID busca un Turno por su id
+	GetByID(id int) (domain.Turno, error)
+	// Create agrega un nuevo Turno
+	Create(p domain.Turno) (domain.Turno, error)
+	// Update actualiza un Turno
+	Update(id int, p domain.Turno) (domain.Turno, error)
+	// Delete elimina un Turno
+	Delete(id int) error
+}
+
+type repository struct {
+	storage store.TurnoInterface
+}
+
+// NewRepository crea un nuevo repositorio
+func NewRepository(storage store.TurnoInterface) Repository {
+	return &repository{storage}
+}
+
+func (r *repository) GetByID(id int) (domain.Turno, error) {
+	turno, err := r.storage.Read(id)
+	if err != nil {
+		return domain.Turno{}, errors.New("Turno not found")
+	}
+	return turno, nil
+
+}
+
+func (r *repository) Create(t domain.Turno) (domain.Turno, error) {
+	if r.storage.Exists(strconv.Itoa(t.Id)) {
+		return domain.Turno{}, errors.New("dni already exists")
+	}
+	err := r.storage.Create(t)
+	if err != nil {
+		return domain.Turno{}, errors.New("error creating Turno")
+	}
+	return t, nil
+}
+
+func (r *repository) Delete(id int) error {
+	err := r.storage.Delete(id)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func (r *repository) Update(id int, p domain.Turno) (domain.Turno, error) {
+	if r.storage.Exists(strconv.Itoa(p.DNI)) {
+		return domain.Turno{}, errors.New("dni already exists")
+	}
+	err := r.storage.Update(p)
+	if err != nil {
+		return domain.Turno{}, errors.New("error updating Turno")
+	}
+	return p, nil
+}
