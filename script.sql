@@ -1,3 +1,9 @@
+DROP USER IF EXISTS 'user1'@'localhost';
+
+-- Create user with all privileges
+CREATE USER 'user1'@'localhost' IDENTIFIED BY 'secret_password';
+GRANT ALL PRIVILEGES ON *.* TO 'user1'@'localhost';
+
 drop database if exists final_go_zt;
 create database final_go_zt;
 use final_go_zt;

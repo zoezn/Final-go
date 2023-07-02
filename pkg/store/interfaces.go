@@ -7,7 +7,7 @@ import (
 type StoreInterface interface {
 	Read(id int) (domain.Dentista, error)
 	Create(product domain.Dentista) error
-	Update(product domain.Dentista) error
+	Update(id int, product domain.Dentista) error
 	Delete(id int) error
 	Exists(codeValue string) bool
 }
