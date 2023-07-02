@@ -52,7 +52,25 @@ func (s *SqlStore) Create(product domain.Dentista) error {
 	return nil
 }
 
-func (s *SqlStore) Update(product domain.Dentista) error {
+func (s *SqlStore) Update(id int, product domain.Dentista) error {
+	query := "UPDATE dentistas SET `apellido` = ?,`nombre` = ?,`matricula` = ? WHERE `id` = ?;"
+	stmt, err := s.DB.Prepare(query)
+	if err != nil {
+		return err
+	}
+
+	res, err := stmt.Exec(product.Apellido, product.Nombre, product.Matricula, id)
+	if err != nil {
+		return err
+	}
+	_, err = res.RowsAffected()
+	if err != nil {
+		return err
+	}
+
+	lid, _ := res.LastInsertId()
+	product.Id = int(lid)
+	fmt.Println(product)
 	return nil
 }
 

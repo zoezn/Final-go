@@ -19,12 +19,8 @@ func main() {
 	if err != nil {
 		log.Fatal("Error while trying to load .env file")
 	}
-	// storage := store.NewJsonStore("./dentistas.json")
 
-	// credenciales zoe
-	db, err := sql.Open("mysql", "root:1234@/final_go_zt")
-	// credenciales tomi
-	// db, err := sql.Open("mysql", "root:root@/final_go_zt")
+	db, err := sql.Open("mysql", "user1:secret_password@/final_go_zt")
 
 	if err != nil {
 		panic(err.Error())

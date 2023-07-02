@@ -173,9 +173,9 @@ func (h *dentistaHandler) Put() gin.HandlerFunc {
 // Patch actualiza un dentista o alguno de sus campos
 func (h *dentistaHandler) Patch() gin.HandlerFunc {
 	type Request struct {
-		Apellido  string `json:"apellido" binding:"required"`
-		Nombre    string `json:"nombre" binding:"required"`
-		Matricula string `json:"matricula" binding:"required"`
+		Apellido  string `json:"apellido" binding:"-"`
+		Nombre    string `json:"nombre" binding:"-"`
+		Matricula string `json:"matricula" binding:"-"`
 	}
 	return func(c *gin.Context) {
 		token := c.GetHeader("TOKEN")
