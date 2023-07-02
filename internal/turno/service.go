@@ -4,7 +4,7 @@ import (
 	"github.com/zoezn/Final-go/internal/domain"
 )
 
-type Service interface {
+type TurnoService interface {
 	GetByID(id int) (domain.Turno, error)
 	Create(p domain.Turno) (domain.Turno, error)
 	Delete(id int) error
@@ -15,7 +15,7 @@ type service struct {
 	r Repository
 }
 
-func NewService(r Repository) Service {
+func NewService(r Repository) TurnoService {
 	return &service{r}
 }
 

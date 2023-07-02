@@ -2,10 +2,9 @@ package turno
 
 import (
 	"errors"
-	"strconv"
 
 	"github.com/zoezn/Final-go/internal/domain"
-	"github.com/zoezn/Final-go/pkg/store"
+	"github.com/zoezn/Final-go/pkg/storeTurnos"
 )
 
 type Repository interface {
@@ -16,10 +15,10 @@ type Repository interface {
 }
 
 type repository struct {
-	storage store.TurnoInterface
+	storage storeTurnos.TurnoInterface
 }
 
-func NewRepository(storage store.TurnoInterface) Repository {
+func NewRepository(storage storeTurnos.TurnoInterface) Repository {
 	return &repository{storage}
 }
 
@@ -33,7 +32,7 @@ func (r *repository) GetByID(id int) (domain.Turno, error) {
 }
 
 func (r *repository) Create(t domain.Turno) (domain.Turno, error) {
-	if r.storage.Exists(strconv.Itoa(t.Id)) {
+	if r.storage.Exists(t.Id) {
 		return domain.Turno{}, errors.New("dni already exists")
 	}
 	err := r.storage.Create(t)
@@ -52,10 +51,10 @@ func (r *repository) Delete(id int) error {
 }
 
 func (r *repository) Update(id int, t domain.Turno) (domain.Turno, error) {
-	if r.storage.Exists(strconv.Itoa(t.Id)) {
+	if r.storage.Exists(t.Id) {
 		return domain.Turno{}, errors.New("dni already exists")
 	}
-	err := r.storage.Update(t)
+	err := r.storage.Update(id, t)
 	if err != nil {
 		return domain.Turno{}, errors.New("error updating Turno")
 	}
