@@ -57,7 +57,7 @@ func (r *repository) Update(id int, p domain.Paciente) (domain.Paciente, error) 
 	if r.storage.Exists(p.Id) {
 		return domain.Paciente{}, errors.New("Id already exists")
 	}
-	err := r.storage.Update(p)
+	err := r.storage.Update(id, p)
 	if err != nil {
 		return domain.Paciente{}, errors.New("error updating paciente")
 	}
