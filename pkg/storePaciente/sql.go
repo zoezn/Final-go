@@ -81,13 +81,13 @@ func (s *SqlStore) Delete(id int) error {
 	return nil
 }
 
-func (s *SqlStore) Exists(codeValue string) bool {
+func (s *SqlStore) Exists(id int) bool {
 	var exist bool
-	var id int
+	var dbId int
 
-	query := "SELECT * FROM pacientes WHERE code_value = ?;"
+	query := "SELECT * FROM pacientes WHERE id = ?;"
 	row := s.DB.QueryRow(query, id)
-	err := row.Scan(&id)
+	err := row.Scan(&dbId)
 	if err != nil {
 		return exist
 	}
