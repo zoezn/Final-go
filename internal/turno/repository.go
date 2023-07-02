@@ -52,7 +52,7 @@ func (r *repository) Delete(id int) error {
 
 func (r *repository) Update(id int, t domain.Turno) (domain.Turno, error) {
 	if r.storage.Exists(t.Id) {
-		return domain.Turno{}, errors.New("dni already exists")
+		return domain.Turno{}, errors.New("id already exists")
 	}
 	err := r.storage.Update(id, t)
 	if err != nil {

@@ -2,6 +2,7 @@ package handler
 
 import (
 	"errors"
+	"fmt"
 	"os"
 	"strconv"
 
@@ -31,8 +32,9 @@ func (h *turnoHandler) GetByID() gin.HandlerFunc {
 			return
 		}
 		paciente, err := h.s.GetByID(id)
+		fmt.Println(err)
 		if err != nil {
-			web.Failure(c, 404, errors.New("Paciente not found"))
+			web.Failure(c, 404, errors.New("Turno not found"))
 			return
 		}
 		web.Success(c, 200, paciente)
@@ -41,7 +43,7 @@ func (h *turnoHandler) GetByID() gin.HandlerFunc {
 
 func validateEmptyTurnos(turno *domain.Turno) (bool, error) {
 	switch {
-	case turno.Dentista.Nombre == "" || turno.Paciente.Nombre == "" || turno.Fecha == "" || turno.Hora == "" || turno.Descripcion == "":
+	case turno.Dentista.Id == 0 || turno.Paciente.Id == 0 || turno.Fecha == "" || turno.Hora == "" || turno.Descripcion == "":
 		return false, errors.New("Fields can't be empty")
 	}
 	return true, nil
@@ -60,6 +62,7 @@ func (h *turnoHandler) Post() gin.HandlerFunc {
 			return
 		}
 		err := c.ShouldBindJSON(&turno)
+		fmt.Println(err)
 		if err != nil {
 			web.Failure(c, 400, errors.New("Invalid json"))
 			return
@@ -153,11 +156,11 @@ func (h *turnoHandler) Put() gin.HandlerFunc {
 func (h *turnoHandler) Patch() gin.HandlerFunc {
 	type Request struct {
 		Id          int             `json:"id"`
-		Paciente    domain.Paciente `json:"paciente" binding:"required"`
-		Dentista    domain.Dentista `json:"dentista" binding:"required"`
-		Fecha       string          `json:"fecha" binding:"required"`
-		Hora        string          `json:"hora" binding:"required"`
-		Descripcion string          `json:"descripcion" binding:"optional"`
+		Paciente    domain.Paciente `json:"paciente" binding:"-"`
+		Dentista    domain.Dentista `json:"dentista" binding:"-"`
+		Fecha       string          `json:"fecha" binding:"-"`
+		Hora        string          `json:"hora" binding:"-"`
+		Descripcion string          `json:"descripcion" binding:"-"`
 	}
 
 	return func(c *gin.Context) {

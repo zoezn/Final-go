@@ -6,5 +6,5 @@ type Turno struct {
 	Dentista    Dentista `json:"dentista" binding:"required"`
 	Fecha       string   `json:"fecha" binding:"required"`
 	Hora        string   `json:"hora" binding:"required"`
-	Descripcion string   `json:"descripcion" binding:"optional"`
+	Descripcion string   `json:"descripcion" binding:"required"`
 }
