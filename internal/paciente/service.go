@@ -1,8 +1,6 @@
 package paciente
 
 import (
-	"strconv"
-
 	"github.com/zoezn/Final-go/internal/domain"
 )
 
@@ -54,7 +52,7 @@ func (s *service) Update(id int, u domain.Paciente) (domain.Paciente, error) {
 		p.Domicilio = u.Domicilio
 	}
 
-	if strconv.Itoa(u.DNI) != "" {
+	if u.DNI != 0 {
 		p.DNI = u.DNI
 	}
 
