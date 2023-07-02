@@ -5,13 +5,9 @@ import (
 )
 
 type Service interface {
-	// GetByID busca un producto por su id
 	GetByID(id int) (domain.Dentista, error)
-	// Create agrega un nuevo producto
 	Create(p domain.Dentista) (domain.Dentista, error)
-	// Delete elimina un producto
 	Delete(id int) error
-	// Update actualiza un producto
 	Update(id int, p domain.Dentista) (domain.Dentista, error)
 }
 
@@ -19,7 +15,6 @@ type service struct {
 	r Repository
 }
 
-// NewService crea un nuevo servicio
 func NewService(r Repository) Service {
 	return &service{r}
 }

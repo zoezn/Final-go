@@ -9,13 +9,9 @@ import (
 )
 
 type Repository interface {
-	// GetByID busca un Turno por su id
 	GetByID(id int) (domain.Turno, error)
-	// Create agrega un nuevo Turno
 	Create(t domain.Turno) (domain.Turno, error)
-	// Update actualiza un Turno
 	Update(id int, t domain.Turno) (domain.Turno, error)
-	// Delete elimina un Turno
 	Delete(id int) error
 }
 
@@ -23,7 +19,6 @@ type repository struct {
 	storage store.TurnoInterface
 }
 
-// NewRepository crea un nuevo repositorio
 func NewRepository(storage store.TurnoInterface) Repository {
 	return &repository{storage}
 }
