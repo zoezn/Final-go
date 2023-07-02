@@ -21,6 +21,22 @@ func NewDentistaHandler(s dentista.Service) *dentistaHandler {
 	}
 }
 
+func TokenAuthMiddleware(token string) gin.HandlerFunc {
+	requiredToken := os.Getenv("Token ")
+	return func(c *gin.Context) {
+		// token := c.GetHeader("TOKEN")
+		if token == "" {
+			web.Failure(c, 401, errors.New("Token not found"))
+			return
+		}
+		if token != requiredToken {
+			web.Failure(c, 401, errors.New("Invalid token"))
+			return
+		}
+
+		c.Next()
+	}
+}
 func (h *dentistaHandler) GetByID() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		idParam := c.Param("id")
@@ -47,8 +63,6 @@ func validateEmptys(dentista *domain.Dentista) (bool, error) {
 	return true, nil
 }
 
-// validateExpiration valida que la fecha de expiracion sea valida
-
 // Post crea un nuevo dentista
 func (h *dentistaHandler) Post() gin.HandlerFunc {
 	return func(c *gin.Context) {
@@ -62,6 +76,7 @@ func (h *dentistaHandler) Post() gin.HandlerFunc {
 			web.Failure(c, 401, errors.New("Invalid token"))
 			return
 		}
+
 		err := c.ShouldBindJSON(&dentista)
 		if err != nil {
 			web.Failure(c, 400, errors.New("Invalid json"))

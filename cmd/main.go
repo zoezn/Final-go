@@ -22,9 +22,9 @@ func main() {
 	// storage := store.NewJsonStore("./dentistas.json")
 
 	// credenciales zoe
-	// db, err := sql.Open("mysql", "root:1234@/final_go_zt")
+	db, err := sql.Open("mysql", "root:1234@/final_go_zt")
 	// credenciales tomi
-	db, err := sql.Open("mysql", "root:root@/final_go_zt")
+	// db, err := sql.Open("mysql", "root:root@/final_go_zt")
 
 	if err != nil {
 		panic(err.Error())
