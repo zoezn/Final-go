@@ -7,13 +7,9 @@ import (
 )
 
 type PacienteService interface {
-	// GetByID busca un paciente por su id
 	GetByID(id int) (domain.Paciente, error)
-	// Create agrega un nuevo paciente
 	Create(p domain.Paciente) (domain.Paciente, error)
-	// Delete elimina un paciente
 	Delete(id int) error
-	// Update actualiza un paciente
 	Update(id int, p domain.Paciente) (domain.Paciente, error)
 }
 
@@ -21,7 +17,6 @@ type service struct {
 	r Repository
 }
 
-// NewService crea un nuevo servicio
 func NewService(r Repository) PacienteService {
 	return &service{r}
 }

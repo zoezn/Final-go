@@ -38,7 +38,6 @@ func (h *pacienteHandler) GetByID() gin.HandlerFunc {
 	}
 }
 
-// validateEmptyPacientes valida que los campos no esten vacios
 func validateEmptyPacientes(paciente *domain.Paciente) (bool, error) {
 	switch {
 	case paciente.Nombre == "" || paciente.Apellido == "" || paciente.Domicilio == "" || paciente.DNI < 0 || paciente.Alta == "":
@@ -47,9 +46,6 @@ func validateEmptyPacientes(paciente *domain.Paciente) (bool, error) {
 	return true, nil
 }
 
-// validateExpiration valida que la fecha de expiracion sea valida
-
-// Post crea un nuevo paciente
 func (h *pacienteHandler) Post() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		var paciente domain.Paciente
@@ -81,7 +77,6 @@ func (h *pacienteHandler) Post() gin.HandlerFunc {
 	}
 }
 
-// Delete elimina un paciente
 func (h *pacienteHandler) Delete() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		token := c.GetHeader("TOKEN")
@@ -108,7 +103,6 @@ func (h *pacienteHandler) Delete() gin.HandlerFunc {
 	}
 }
 
-// Put actualiza un paciente
 func (h *pacienteHandler) Put() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		token := c.GetHeader("TOKEN")
@@ -155,7 +149,6 @@ func (h *pacienteHandler) Put() gin.HandlerFunc {
 	}
 }
 
-// Patch actualiza un paciente o alguno de sus campos
 func (h *pacienteHandler) Patch() gin.HandlerFunc {
 	type Request struct {
 		Id        int    `json:"id"`

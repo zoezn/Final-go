@@ -11,32 +11,32 @@ type SqlStore struct {
 	DB *sql.DB
 }
 
-func NewSqlStore(db *sql.DB) StoreInterface {
+func NewSqlStore(db *sql.DB) DentistaInterface {
 	return &SqlStore{
 		DB: db,
 	}
 }
 
 func (s *SqlStore) Read(id int) (domain.Dentista, error) {
-	var productReturn domain.Dentista
+	var dentistaReturn domain.Dentista
 
 	query := "SELECT * FROM dentistas WHERE id = ?;"
 	row := s.DB.QueryRow(query, id)
-	err := row.Scan(&productReturn.Id, &productReturn.Nombre, &productReturn.Apellido, &productReturn.Matricula)
+	err := row.Scan(&dentistaReturn.Id, &dentistaReturn.Nombre, &dentistaReturn.Apellido, &dentistaReturn.Matricula)
 	if err != nil {
 		return domain.Dentista{}, err
 	}
-	return productReturn, nil
+	return dentistaReturn, nil
 }
 
-func (s *SqlStore) Create(product domain.Dentista) error {
+func (s *SqlStore) Create(dentista domain.Dentista) error {
 	query := "INSERT INTO dentistas (Apellido, Nombre, Matricula) VALUES (?, ?, ?);"
 	stmt, err := s.DB.Prepare(query)
 	if err != nil {
 		return err
 	}
 
-	res, err := stmt.Exec(product.Apellido, product.Nombre, product.Matricula)
+	res, err := stmt.Exec(dentista.Apellido, dentista.Nombre, dentista.Matricula)
 	if err != nil {
 		return err
 	}
@@ -47,19 +47,19 @@ func (s *SqlStore) Create(product domain.Dentista) error {
 	}
 
 	lid, _ := res.LastInsertId()
-	product.Id = int(lid)
-	fmt.Println(product)
+	dentista.Id = int(lid)
+	fmt.Println(dentista)
 	return nil
 }
 
-func (s *SqlStore) Update(id int, product domain.Dentista) error {
+func (s *SqlStore) Update(id int, dentista domain.Dentista) error {
 	query := "UPDATE dentistas SET `apellido` = ?,`nombre` = ?,`matricula` = ? WHERE `id` = ?;"
 	stmt, err := s.DB.Prepare(query)
 	if err != nil {
 		return err
 	}
 
-	res, err := stmt.Exec(product.Apellido, product.Nombre, product.Matricula, id)
+	res, err := stmt.Exec(dentista.Apellido, dentista.Nombre, dentista.Matricula, id)
 	if err != nil {
 		return err
 	}
@@ -69,8 +69,8 @@ func (s *SqlStore) Update(id int, product domain.Dentista) error {
 	}
 
 	lid, _ := res.LastInsertId()
-	product.Id = int(lid)
-	fmt.Println(product)
+	dentista.Id = int(lid)
+	fmt.Println(dentista)
 	return nil
 }
 

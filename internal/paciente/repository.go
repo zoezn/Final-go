@@ -9,13 +9,9 @@ import (
 )
 
 type Repository interface {
-	// GetByID busca un paciente por su id
 	GetByID(id int) (domain.Paciente, error)
-	// Create agrega un nuevo paciente
 	Create(p domain.Paciente) (domain.Paciente, error)
-	// Update actualiza un paciente
 	Update(id int, p domain.Paciente) (domain.Paciente, error)
-	// Delete elimina un paciente
 	Delete(id int) error
 }
 
@@ -23,7 +19,6 @@ type repository struct {
 	storage storePaciente.PacienteInterface
 }
 
-// NewRepository crea un nuevo repositorio
 func NewRepository(storage storePaciente.PacienteInterface) Repository {
 	return &repository{storage}
 }

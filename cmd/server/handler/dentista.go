@@ -38,7 +38,6 @@ func (h *dentistaHandler) GetByID() gin.HandlerFunc {
 	}
 }
 
-// validateEmptys valida que los campos no esten vacios
 func validateEmptys(dentista *domain.Dentista) (bool, error) {
 	switch {
 	case dentista.Nombre == "" || dentista.Apellido == "" || dentista.Matricula == "":
@@ -47,9 +46,6 @@ func validateEmptys(dentista *domain.Dentista) (bool, error) {
 	return true, nil
 }
 
-// validateExpiration valida que la fecha de expiracion sea valida
-
-// Post crea un nuevo dentista
 func (h *dentistaHandler) Post() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		var dentista domain.Dentista
@@ -81,7 +77,6 @@ func (h *dentistaHandler) Post() gin.HandlerFunc {
 	}
 }
 
-// Delete elimina un dentista
 func (h *dentistaHandler) Delete() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		token := c.GetHeader("TOKEN")
@@ -108,7 +103,6 @@ func (h *dentistaHandler) Delete() gin.HandlerFunc {
 	}
 }
 
-// Put actualiza un dentista
 func (h *dentistaHandler) Put() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		token := c.GetHeader("TOKEN")
@@ -155,7 +149,6 @@ func (h *dentistaHandler) Put() gin.HandlerFunc {
 	}
 }
 
-// Patch actualiza un dentista o alguno de sus campos
 func (h *dentistaHandler) Patch() gin.HandlerFunc {
 	type Request struct {
 		Apellido  string `json:"apellido" binding:"-"`
@@ -188,6 +181,7 @@ func (h *dentistaHandler) Patch() gin.HandlerFunc {
 			web.Failure(c, 400, errors.New("Invalid json"))
 			return
 		}
+
 		update := domain.Dentista{
 			Apellido:  r.Apellido,
 			Nombre:    r.Nombre,
