@@ -1,4 +1,4 @@
-drop database final_go_zt;
+drop database if exists final_go_zt;
 create database final_go_zt;
 use final_go_zt;
 
