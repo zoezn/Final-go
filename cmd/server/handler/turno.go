@@ -41,7 +41,8 @@ func (h *turnoHandler) GetByID() gin.HandlerFunc {
 }
 func (h *turnoHandler) GetByDNI() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		dniParam := c.Param("dni")
+		// dniParam := c.Param("dni")
+		dniParam := c.Query("dni")
 		dni, err := strconv.Atoi(dniParam)
 		if err != nil {
 			web.Failure(c, 400, errors.New("Invalid dni"))

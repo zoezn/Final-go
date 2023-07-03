@@ -52,8 +52,8 @@ func (s *SqlStore) ReadByDni(dni int) (domain.Turno, error) {
 	var turnoReturn domain.Turno
 	var dentistaId int
 	var pacienteId int
-
-	query := "SELECT * FROM turnos t JOIN pacientes p ON t.paciente_id = p.id WHERE p.dni = ?;"
+	fmt.Println(dni)
+	query := "SELECT t.id, t.dentista_id, t.paciente_id, t.fecha, t.hora , t.descripcion FROM turnos t JOIN pacientes p ON t.paciente_id = p.id WHERE p.dni = ?;"
 	row := s.DB.QueryRow(query, dni)
 	err := row.Scan(&turnoReturn.Id, &dentistaId, &pacienteId, &turnoReturn.Fecha, &turnoReturn.Hora, &turnoReturn.Descripcion)
 	if err != nil {

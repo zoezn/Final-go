@@ -38,7 +38,7 @@ func (r *repository) GetByID(id int) (domain.Turno, error) {
 }
 
 func (r *repository) GetByDNI(dni int) (domain.Turno, error) {
-	turno, err := r.storage.Read(dni)
+	turno, err := r.storage.ReadByDni(dni)
 	if err != nil {
 		return domain.Turno{}, errors.New("Turno not found")
 	}
