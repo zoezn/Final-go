@@ -1,0 +1,191 @@
+definitions:
+  web.Response:
+    properties:
+      data: {}
+    type: object
+info:
+  contact:
+    name: Soporte ZT
+    url: https://help.steampowered.com/es/wizard/HelpWithGame/?appid=730
+  description: Proyecto integrador final, API odontologica en GoLang.
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  termsOfService: https://blog.counter-strike.net/index.php/server_guidelines/
+  title: Proyecto Final Esp. Backend IV
+  version: "1.0"
+paths:
+  /dentistas/:
+    post:
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/web.Response'
+      summary: Crear nuevo dentista.
+      tags:
+      - Dentista
+  /dentistas/:id:
+    delete:
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/web.Response'
+      summary: Eliminar dentista por Id.
+      tags:
+      - Dentista
+    get:
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/web.Response'
+      summary: Buscar dentista por Id.
+      tags:
+      - Dentista
+    patch:
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/web.Response'
+      summary: Actualizar campos deseados de dentista por Id.
+      tags:
+      - Dentista
+    put:
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/web.Response'
+      summary: Actualizar dentista por Id.
+      tags:
+      - Dentista
+  /paciente/:
+    post:
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/web.Response'
+      summary: Crear nuevo paciente.
+      tags:
+      - Paciente
+  /paciente/:id:
+    get:
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/web.Response'
+      summary: Actualizar paciente por Id.
+      tags:
+      - Paciente
+  /pacientes/:id:
+    delete:
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/web.Response'
+      summary: Eliminar paciente por Id.
+      tags:
+      - Paciente
+    patch:
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/web.Response'
+      summary: Actualizar campos deseados de paciente por Id.
+      tags:
+      - Paciente
+    put:
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/web.Response'
+      summary: Actualizar paciente por Id.
+      tags:
+      - Paciente
+  /turno/:
+    post:
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/web.Response'
+      summary: Crear nuevo turno.
+      tags:
+      - Turno
+  /turno/:id:
+    patch:
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/web.Response'
+      summary: Actualizar campos deseados de turno por Id.
+      tags:
+      - Turno
+  /turnos/:id:
+    delete:
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/web.Response'
+      summary: Eliminar turno por Id.
+      tags:
+      - Turno
+    get:
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/web.Response'
+      summary: Buscar turno por Id.
+      tags:
+      - Turnos
+    put:
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/web.Response'
+      summary: Actualizar turno por Id.
+      tags:
+      - Turno
+swagger: "2.0"

@@ -22,7 +22,11 @@ func NewTurnoHandler(s turno.TurnoService) *turnoHandler {
 	}
 }
 
-// supuestamente esto es para documentar swagger
+// @Summary Buscar turno por Id.
+// @Tags Turno
+// @Produce json
+// @Success 200 {object} web.Response
+// @Router /turnos/:id [get]
 func (h *turnoHandler) GetByID() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		idParam := c.Param("id")
@@ -41,6 +45,11 @@ func (h *turnoHandler) GetByID() gin.HandlerFunc {
 	}
 }
 
+// @Summary Crear nuevo turno.
+// @Tags Turno
+// @Produce json
+// @Success 200 {object} web.Response
+// @Router /turno/ [post]
 func (h *turnoHandler) Post() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		var turno domain.Turno
@@ -73,6 +82,11 @@ func (h *turnoHandler) Post() gin.HandlerFunc {
 	}
 }
 
+// @Summary Eliminar turno por Id.
+// @Tags Turno
+// @Produce json
+// @Success 200 {object} web.Response
+// @Router /turnos/:id [delete]
 func (h *turnoHandler) Delete() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		token := c.GetHeader("TOKEN")
@@ -99,6 +113,11 @@ func (h *turnoHandler) Delete() gin.HandlerFunc {
 	}
 }
 
+// @Summary Actualizar turno por Id.
+// @Tags Turno
+// @Produce json
+// @Success 200 {object} web.Response
+// @Router /turnos/:id [put]
 func (h *turnoHandler) Put() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		token := c.GetHeader("TOKEN")
@@ -145,6 +164,11 @@ func (h *turnoHandler) Put() gin.HandlerFunc {
 	}
 }
 
+// @Summary Actualizar campos deseados de turno por Id.
+// @Tags Turno
+// @Produce json
+// @Success 200 {object} web.Response
+// @Router /turno/:id [patch]
 func (h *turnoHandler) Patch() gin.HandlerFunc {
 	type Request struct {
 		Id          int             `json:"id"`

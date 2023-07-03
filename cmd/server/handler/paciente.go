@@ -21,7 +21,11 @@ func NewPacienteHandler(s paciente.PacienteService) *pacienteHandler {
 	}
 }
 
-// supuestamente esto es para documentar swagger
+// @Summary Actualizar paciente por Id.
+// @Tags Paciente
+// @Produce json
+// @Success 200 {object} web.Response
+// @Router /paciente/:id [get]
 func (h *pacienteHandler) GetByID() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		idParam := c.Param("id")
@@ -39,6 +43,11 @@ func (h *pacienteHandler) GetByID() gin.HandlerFunc {
 	}
 }
 
+// @Summary Crear nuevo paciente.
+// @Tags Paciente
+// @Produce json
+// @Success 200 {object} web.Response
+// @Router /paciente/ [post]
 func (h *pacienteHandler) Post() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		var paciente domain.Paciente
@@ -70,6 +79,11 @@ func (h *pacienteHandler) Post() gin.HandlerFunc {
 	}
 }
 
+// @Summary Eliminar paciente por Id.
+// @Tags Paciente
+// @Produce json
+// @Success 200 {object} web.Response
+// @Router /pacientes/:id [delete]
 func (h *pacienteHandler) Delete() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		token := c.GetHeader("TOKEN")
@@ -96,6 +110,11 @@ func (h *pacienteHandler) Delete() gin.HandlerFunc {
 	}
 }
 
+// @Summary Actualizar paciente por Id.
+// @Tags Paciente
+// @Produce json
+// @Success 200 {object} web.Response
+// @Router /pacientes/:id [put]
 func (h *pacienteHandler) Put() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		token := c.GetHeader("TOKEN")
@@ -142,6 +161,11 @@ func (h *pacienteHandler) Put() gin.HandlerFunc {
 	}
 }
 
+// @Summary Actualizar campos deseados de paciente por Id.
+// @Tags Paciente
+// @Produce json
+// @Success 200 {object} web.Response
+// @Router /pacientes/:id [patch]
 func (h *pacienteHandler) Patch() gin.HandlerFunc {
 	type Request struct {
 		// Id        int    `json:"id"`

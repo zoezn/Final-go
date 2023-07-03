@@ -3,11 +3,15 @@ package main
 import (
 	"database/sql"
 	"log"
+	"os"
 
 	"github.com/gin-gonic/gin"
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/joho/godotenv"
+	swaggerFiles "github.com/swaggo/files"
+	ginSwagger "github.com/swaggo/gin-swagger"
 	"github.com/zoezn/Final-go/cmd/server/handler"
+	"github.com/zoezn/Final-go/docs"
 	"github.com/zoezn/Final-go/internal/dentista"
 	"github.com/zoezn/Final-go/internal/paciente"
 	"github.com/zoezn/Final-go/internal/turno"
@@ -16,6 +20,16 @@ import (
 	"github.com/zoezn/Final-go/pkg/storeTurnos"
 )
 
+// @title Proyecto Final Esp. Backend IV
+// @version 1.0
+// @description Proyecto integrador final, API odontologica en GoLang.
+// @termsOfService https://blog.counter-strike.net/index.php/server_guidelines/
+
+// @contact.name Soporte ZT
+// @contact.url https://help.steampowered.com/es/wizard/HelpWithGame/?appid=730
+
+// @license.name Apache 2.0
+// @license.url http://www.apache.org/licenses/LICENSE-2.0.html
 func main() {
 	err := godotenv.Load()
 	if err != nil {
@@ -50,6 +64,9 @@ func main() {
 	turnoHandler := handler.NewTurnoHandler(turnoService)
 
 	r := gin.Default()
+
+	docs.SwaggerInfo.Host = os.Getenv("HOST")
+	r.GET("/docs/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 
 	r.GET("/ping", func(c *gin.Context) { c.String(200, "pong") })
 	dentistas := r.Group("/dentistas")

@@ -20,6 +20,11 @@ func NewDentistaHandler(s dentista.Service) *dentistaHandler {
 	}
 }
 
+// @Summary Buscar dentista por Id.
+// @Tags Dentista
+// @Produce json
+// @Success 200 {object} web.Response
+// @Router /dentistas/:id [get]
 func (h *dentistaHandler) GetByID() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		idParam := c.Param("id")
@@ -37,7 +42,11 @@ func (h *dentistaHandler) GetByID() gin.HandlerFunc {
 	}
 }
 
-// Post crea un nuevo dentista
+// @Summary Crear nuevo dentista.
+// @Tags Dentista
+// @Produce json
+// @Success 200 {object} web.Response
+// @Router /dentistas/ [post]
 func (h *dentistaHandler) Post() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		if err := ValidateToken(c); err != nil {
@@ -66,6 +75,11 @@ func (h *dentistaHandler) Post() gin.HandlerFunc {
 	}
 }
 
+// @Summary Eliminar dentista por Id.
+// @Tags Dentista
+// @Produce json
+// @Success 200 {object} web.Response
+// @Router /dentistas/:id [delete]
 func (h *dentistaHandler) Delete() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		if err := ValidateToken(c); err != nil {
@@ -88,6 +102,11 @@ func (h *dentistaHandler) Delete() gin.HandlerFunc {
 	}
 }
 
+// @Summary Actualizar dentista por Id.
+// @Tags Dentista
+// @Produce json
+// @Success 200 {object} web.Response
+// @Router /dentistas/:id [put]
 func (h *dentistaHandler) Put() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		if err := ValidateToken(c); err != nil {
@@ -130,6 +149,11 @@ func (h *dentistaHandler) Put() gin.HandlerFunc {
 	}
 }
 
+// @Summary Actualizar campos deseados de dentista por Id.
+// @Tags Dentista
+// @Produce json
+// @Success 200 {object} web.Response
+// @Router /dentistas/:id [patch]
 func (h *dentistaHandler) Patch() gin.HandlerFunc {
 	type Request struct {
 		Apellido  string `json:"apellido" binding:"-"`
