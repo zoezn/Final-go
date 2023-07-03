@@ -34,8 +34,8 @@ paciente_id INT NOT NULL,
 fecha VARCHAR(50) NOT NULL,
 hora VARCHAR(50) NOT NULL,
 descripcion VARCHAR(255),
-CONSTRAINT fk_dentistas foreign key (dentista_id) references dentistas (id),
-CONSTRAINT fk_pacientes foreign key (paciente_id) references pacientes (id)
+CONSTRAINT fk_dentistas foreign key (dentista_id) references dentistas (id) ON DELETE CASCADE,
+CONSTRAINT fk_pacientes foreign key (paciente_id) references pacientes (id) ON DELETE CASCADE
 );
 
 INSERT INTO dentistas VALUES (default, "Zoe", "Jimenez", "123456789");
