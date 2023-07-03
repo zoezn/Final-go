@@ -28,6 +28,17 @@ func (s *SqlStore) Read(id int) (domain.Paciente, error) {
 	}
 	return pacienteReturn, nil
 }
+func (s *SqlStore) ReadByDNI(dni int) (domain.Paciente, error) {
+	var pacienteReturn domain.Paciente
+
+	query := "SELECT * FROM pacientes WHERE dni = ?;"
+	row := s.DB.QueryRow(query, dni)
+	err := row.Scan(&pacienteReturn.Id, &pacienteReturn.Nombre, &pacienteReturn.Apellido, &pacienteReturn.Domicilio, &pacienteReturn.DNI, &pacienteReturn.Alta)
+	if err != nil {
+		return domain.Paciente{}, err
+	}
+	return pacienteReturn, nil
+}
 
 func (s *SqlStore) Create(paciente domain.Paciente) error {
 	query := "INSERT INTO pacientes (nombre, apellido, domicilio, dni, alta) VALUES (?, ?, ?, ?, ?);"
@@ -111,6 +122,24 @@ func (s *SqlStore) Exists(id int) bool {
 	}
 
 	if id > 0 {
+		exist = true
+	}
+
+	return exist
+
+}
+func (s *SqlStore) ExistsByDni(dni int) bool {
+	var exist bool
+	var dbId int
+
+	query := "SELECT * FROM pacientes WHERE dni = ?;"
+	row := s.DB.QueryRow(query, dni)
+	err := row.Scan(&dbId)
+	if err != nil {
+		return exist
+	}
+
+	if dni >= 0 {
 		exist = true
 	}
 
