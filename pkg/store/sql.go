@@ -35,6 +35,9 @@ func (s *SqlStore) ReadByMatricula(matricula string) (domain.Dentista, error) {
 	query := "SELECT * FROM dentistas WHERE matricula = ?;"
 	row := s.DB.QueryRow(query, matricula)
 	err := row.Scan(&dentistaReturn.Id, &dentistaReturn.Nombre, &dentistaReturn.Apellido, &dentistaReturn.Matricula)
+	fmt.Println(matricula)
+	fmt.Println(row)
+	fmt.Println(err)
 	if err != nil {
 		return domain.Dentista{}, errors.New(dentistaReturn.Matricula)
 	}

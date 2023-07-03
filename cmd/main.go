@@ -75,7 +75,7 @@ func main() {
 		turnos.GET(":id", turnoHandler.GetByID())
 		turnos.POST("", turnoHandler.Post())
 		turnos.GET("/paciente/:dni", turnoHandler.GetByDNI())
-		turnos.POST("/noinfo", turnoHandler.PostMatriculaId())
+		turnos.POST("/noids", turnoHandler.PostMatriculaId())
 		turnos.DELETE(":id", turnoHandler.Delete())
 		turnos.PATCH(":id", turnoHandler.Patch())
 		turnos.PUT(":id", turnoHandler.Put())

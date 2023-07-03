@@ -128,7 +128,7 @@ func (h *turnoHandler) PostMatriculaId() gin.HandlerFunc {
 			web.Failure(c, 400, err)
 			return
 		}
-		d, err := h.s.CreateWithoutIds(turno, turno.Dentista.Matricula, turno.Paciente.DNI)
+		d, err := h.s.CreateWithoutIds(turno, turno.Matricula, turno.DNI)
 		if err != nil {
 			web.Failure(c, 400, err)
 			return
