@@ -42,3 +42,11 @@ func ValidateEmptyTurnos(turno *domain.Turno) (bool, error) {
 	}
 	return true, nil
 }
+
+func ValidateEmptyTurnosNoIds(turno *domain.Turno) (bool, error) {
+	switch {
+	case turno.Matricula == "" || turno.DNI == 0 || turno.Fecha == "" || turno.Hora == "" || turno.Descripcion == "":
+		return false, errors.New("Fields can't be empty")
+	}
+	return true, nil
+}

@@ -37,7 +37,14 @@ func (h *dentistaHandler) GetByID() gin.HandlerFunc {
 	}
 }
 
-// Post crea un nuevo dentista
+func validateEmptys(dentista *domain.Dentista) (bool, error) {
+	switch {
+	case dentista.Nombre == "" || dentista.Apellido == "" || dentista.Matricula == "":
+		return false, errors.New("Fields can't be empty")
+	}
+	return true, nil
+}
+
 func (h *dentistaHandler) Post() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		if err := ValidateToken(c); err != nil {

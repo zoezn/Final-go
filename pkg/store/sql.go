@@ -2,6 +2,7 @@ package store
 
 import (
 	"database/sql"
+	"errors"
 	"fmt"
 
 	"github.com/zoezn/Final-go/internal/domain"
@@ -25,6 +26,17 @@ func (s *SqlStore) Read(id int) (domain.Dentista, error) {
 	err := row.Scan(&dentistaReturn.Id, &dentistaReturn.Nombre, &dentistaReturn.Apellido, &dentistaReturn.Matricula)
 	if err != nil {
 		return domain.Dentista{}, err
+	}
+	return dentistaReturn, nil
+}
+func (s *SqlStore) ReadByMatricula(matricula string) (domain.Dentista, error) {
+	var dentistaReturn domain.Dentista
+
+	query := "SELECT * FROM dentistas WHERE matricula = ?;"
+	row := s.DB.QueryRow(query, matricula)
+	err := row.Scan(&dentistaReturn.Id, &dentistaReturn.Nombre, &dentistaReturn.Apellido, &dentistaReturn.Matricula)
+	if err != nil {
+		return domain.Dentista{}, errors.New(dentistaReturn.Matricula)
 	}
 	return dentistaReturn, nil
 }
@@ -99,21 +111,19 @@ func (s *SqlStore) Delete(id int) error {
 	return nil
 }
 
-func (s *SqlStore) Exists(codeValue string) bool {
+func (s *SqlStore) Exists(matricula string) bool {
 	var exist bool
-	var id int
 
-	query := "SELECT * FROM dentistas WHERE code_value = ?;"
-	row := s.DB.QueryRow(query, id)
-	err := row.Scan(&id)
+	query := "SELECT * FROM dentistas WHERE matricula = ?;"
+	row := s.DB.QueryRow(query, matricula)
+	err := row.Scan(&matricula)
 	if err != nil {
 		return exist
 	}
 
-	if id > 0 {
+	if matricula != "" {
 		exist = true
 	}
 
 	return exist
-
 }

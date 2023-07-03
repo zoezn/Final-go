@@ -33,11 +33,11 @@ func main() {
 		panic(errPing.Error())
 	}
 
-	storage := store.NewSqlStore(db)
+	dentistaDB := store.NewSqlStore(db)
 	pacienteDB := storePaciente.NewSqlStore(db)
 	turnoDB := storeTurnos.NewSqlStore(db)
 
-	dentistaRepository := dentista.NewRepository(storage)
+	dentistaRepository := dentista.NewRepository(dentistaDB)
 	dentistaService := dentista.NewService(dentistaRepository)
 	dentistaHandler := handler.NewDentistaHandler(dentistaService)
 
@@ -45,7 +45,7 @@ func main() {
 	pacienteService := paciente.NewService(pacienteRepository)
 	pacienteHandler := handler.NewPacienteHandler(pacienteService)
 
-	turnoRepository := turno.NewRepository(turnoDB)
+	turnoRepository := turno.NewRepository(turnoDB, pacienteDB, dentistaDB)
 	turnoService := turno.NewService(turnoRepository)
 	turnoHandler := handler.NewTurnoHandler(turnoService)
 
@@ -74,6 +74,8 @@ func main() {
 	{
 		turnos.GET(":id", turnoHandler.GetByID())
 		turnos.POST("", turnoHandler.Post())
+		turnos.GET("", turnoHandler.GetByDNI())
+		turnos.POST("/noids", turnoHandler.PostMatriculaId())
 		turnos.DELETE(":id", turnoHandler.Delete())
 		turnos.PATCH(":id", turnoHandler.Patch())
 		turnos.PUT(":id", turnoHandler.Put())
