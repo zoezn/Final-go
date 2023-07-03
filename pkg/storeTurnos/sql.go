@@ -24,7 +24,38 @@ func (s *SqlStore) Read(id int) (domain.Turno, error) {
 
 	query := "SELECT * FROM turnos WHERE id = ?;"
 	row := s.DB.QueryRow(query, id)
-	err := row.Scan(&turnoReturn.Id, &dentistaId, &pacienteId, &turnoReturn.Descripcion, &turnoReturn.Fecha, &turnoReturn.Hora)
+	err := row.Scan(&turnoReturn.Id, &dentistaId, &pacienteId, &turnoReturn.Fecha, &turnoReturn.Hora, &turnoReturn.Descripcion)
+	if err != nil {
+		fmt.Println(err)
+		return domain.Turno{}, err
+	}
+
+	dQuery := "SELECT * FROM dentistas WHERE id = ?;"
+	dRow := s.DB.QueryRow(dQuery, dentistaId)
+	err = dRow.Scan(&turnoReturn.Dentista.Id, &turnoReturn.Dentista.Nombre, &turnoReturn.Dentista.Apellido, &turnoReturn.Dentista.Matricula)
+	if err != nil {
+		fmt.Println(err)
+		return domain.Turno{}, err
+	}
+
+	pQuery := "SELECT * FROM pacientes WHERE id = ?;"
+	pRow := s.DB.QueryRow(pQuery, pacienteId)
+	err = pRow.Scan(&turnoReturn.Paciente.Id, &turnoReturn.Paciente.Nombre, &turnoReturn.Paciente.Apellido, &turnoReturn.Paciente.Domicilio, &turnoReturn.Paciente.DNI, &turnoReturn.Paciente.Alta)
+	if err != nil {
+		fmt.Println(err)
+		return domain.Turno{}, err
+	}
+
+	return turnoReturn, nil
+}
+func (s *SqlStore) ReadByDni(dni int) (domain.Turno, error) {
+	var turnoReturn domain.Turno
+	var dentistaId int
+	var pacienteId int
+
+	query := "SELECT * FROM turnos t JOIN pacientes p ON t.paciente_id = p.id WHERE p.dni = ?;"
+	row := s.DB.QueryRow(query, dni)
+	err := row.Scan(&turnoReturn.Id, &dentistaId, &pacienteId, &turnoReturn.Fecha, &turnoReturn.Hora, &turnoReturn.Descripcion)
 	if err != nil {
 		fmt.Println(err)
 		return domain.Turno{}, err
@@ -58,6 +89,31 @@ func (s *SqlStore) Create(turno domain.Turno) error {
 	}
 
 	res, err := stmt.Exec(turno.Dentista.Id, turno.Paciente.Id, turno.Fecha, turno.Hora, turno.Descripcion)
+	if err != nil {
+		fmt.Println(err)
+		return err
+	}
+
+	_, err = res.RowsAffected()
+	if err != nil {
+		return err
+	}
+
+	lid, _ := res.LastInsertId()
+	turno.Id = int(lid)
+	return nil
+}
+
+func (s *SqlStore) CreateWithoutIds(turno domain.Turno, dentistaId int, pacienteId int) error {
+
+	query := "INSERT INTO turnos (dentista_id, paciente_id, fecha, hora, descripcion) VALUES (?, ?, ?, ?, ?);"
+	stmt, err := s.DB.Prepare(query)
+	if err != nil {
+		fmt.Println(err)
+		return err
+	}
+
+	res, err := stmt.Exec(dentistaId, pacienteId, turno.Fecha, turno.Hora, turno.Descripcion)
 	if err != nil {
 		fmt.Println(err)
 		return err

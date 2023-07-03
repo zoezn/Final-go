@@ -62,7 +62,6 @@ func validateEmptys(dentista *domain.Dentista) (bool, error) {
 	return true, nil
 }
 
-// Post crea un nuevo dentista
 func (h *dentistaHandler) Post() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		var dentista domain.Dentista

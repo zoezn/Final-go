@@ -6,8 +6,9 @@ import (
 
 type DentistaInterface interface {
 	Read(id int) (domain.Dentista, error)
+	ReadByMatricula(matricula string) (domain.Dentista, error)
 	Create(dentista domain.Dentista) error
 	Update(id int, dentista domain.Dentista) error
 	Delete(id int) error
-	Exists(codeValue string) bool
+	Exists(matricula string) bool
 }

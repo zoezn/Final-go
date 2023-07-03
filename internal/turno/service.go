@@ -6,7 +6,9 @@ import (
 
 type TurnoService interface {
 	GetByID(id int) (domain.Turno, error)
+	GetByDNI(dni int) (domain.Turno, error)
 	Create(p domain.Turno) (domain.Turno, error)
+	CreateWithoutIds(p domain.Turno, dMatricula string, pDNI int) (domain.Turno, error)
 	Delete(id int) error
 	Update(id int, p domain.Turno) (domain.Turno, error)
 }
@@ -26,9 +28,23 @@ func (s *service) GetByID(id int) (domain.Turno, error) {
 	}
 	return t, nil
 }
+func (s *service) GetByDNI(dni int) (domain.Turno, error) {
+	t, err := s.r.GetByDNI(dni)
+	if err != nil {
+		return domain.Turno{}, err
+	}
+	return t, nil
+}
 
 func (s *service) Create(t domain.Turno) (domain.Turno, error) {
 	turno, err := s.r.Create(t)
+	if err != nil {
+		return domain.Turno{}, err
+	}
+	return turno, nil
+}
+func (s *service) CreateWithoutIds(t domain.Turno, dMatricula string, pDNI int) (domain.Turno, error) {
+	turno, err := s.r.CreateWithoutIds(t, dMatricula, pDNI)
 	if err != nil {
 		return domain.Turno{}, err
 	}
@@ -43,6 +59,12 @@ func (s *service) Update(id int, u domain.Turno) (domain.Turno, error) {
 		t.Paciente = u.Paciente
 	}
 	if u.Dentista != (domain.Dentista{}) {
+		t.Dentista = u.Dentista
+	}
+	if u.Paciente != t.Paciente {
+		t.Paciente = u.Paciente
+	}
+	if u.Dentista != t.Dentista {
 		t.Dentista = u.Dentista
 	}
 	if u.Fecha != "" {
