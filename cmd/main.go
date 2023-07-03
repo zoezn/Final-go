@@ -10,8 +10,10 @@ import (
 	"github.com/zoezn/Final-go/cmd/server/handler"
 	"github.com/zoezn/Final-go/internal/dentista"
 	"github.com/zoezn/Final-go/internal/paciente"
+	"github.com/zoezn/Final-go/internal/turno"
 	"github.com/zoezn/Final-go/pkg/store"
 	"github.com/zoezn/Final-go/pkg/storePaciente"
+	"github.com/zoezn/Final-go/pkg/storeTurnos"
 )
 
 func main() {
@@ -33,6 +35,7 @@ func main() {
 
 	storage := store.NewSqlStore(db)
 	pacienteDB := storePaciente.NewSqlStore(db)
+	turnoDB := storeTurnos.NewSqlStore(db)
 
 	dentistaRepository := dentista.NewRepository(storage)
 	dentistaService := dentista.NewService(dentistaRepository)
@@ -41,6 +44,10 @@ func main() {
 	pacienteRepository := paciente.NewRepository(pacienteDB)
 	pacienteService := paciente.NewService(pacienteRepository)
 	pacienteHandler := handler.NewPacienteHandler(pacienteService)
+
+	turnoRepository := turno.NewRepository(turnoDB)
+	turnoService := turno.NewService(turnoRepository)
+	turnoHandler := handler.NewTurnoHandler(turnoService)
 
 	r := gin.Default()
 
@@ -61,6 +68,15 @@ func main() {
 		pacientes.DELETE(":id", pacienteHandler.Delete())
 		pacientes.PATCH(":id", pacienteHandler.Patch())
 		pacientes.PUT(":id", pacienteHandler.Put())
+	}
+
+	turnos := r.Group("/turnos")
+	{
+		turnos.GET(":id", turnoHandler.GetByID())
+		turnos.POST("", turnoHandler.Post())
+		turnos.DELETE(":id", turnoHandler.Delete())
+		turnos.PATCH(":id", turnoHandler.Patch())
+		turnos.PUT(":id", turnoHandler.Put())
 	}
 
 	r.Run(":8080")

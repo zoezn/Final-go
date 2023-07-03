@@ -11,11 +11,3 @@ type DentistaInterface interface {
 	Delete(id int) error
 	Exists(codeValue string) bool
 }
-
-type TurnoInterface interface {
-	Read(id int) (domain.Turno, error)
-	Create(turno domain.Turno) error
-	Update(turno domain.Turno) error
-	Delete(id int) error
-	Exists(codeValue string) bool
-}

@@ -31,8 +31,8 @@ create table turnos
 id INT PRIMARY KEY AUTO_INCREMENT,
 dentista_id INT NOT NULL,
 paciente_id INT NOT NULL,
-fecha CHAR(8) NOT NULL,
-hora CHAR(5) NOT NULL,
+fecha VARCHAR(50) NOT NULL,
+hora VARCHAR(50) NOT NULL,
 descripcion VARCHAR(255),
 CONSTRAINT fk_dentistas foreign key (dentista_id) references dentistas (id),
 CONSTRAINT fk_pacientes foreign key (paciente_id) references pacientes (id)
