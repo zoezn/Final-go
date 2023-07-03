@@ -2,7 +2,6 @@ package handler
 
 import (
 	"errors"
-	"os"
 	"strconv"
 
 	"github.com/gin-gonic/gin"
@@ -21,22 +20,6 @@ func NewDentistaHandler(s dentista.Service) *dentistaHandler {
 	}
 }
 
-func TokenAuthMiddleware(token string) gin.HandlerFunc {
-	requiredToken := os.Getenv("Token ")
-	return func(c *gin.Context) {
-		// token := c.GetHeader("TOKEN")
-		if token == "" {
-			web.Failure(c, 401, errors.New("Token not found"))
-			return
-		}
-		if token != requiredToken {
-			web.Failure(c, 401, errors.New("Invalid token"))
-			return
-		}
-
-		c.Next()
-	}
-}
 func (h *dentistaHandler) GetByID() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		idParam := c.Param("id")
@@ -54,34 +37,22 @@ func (h *dentistaHandler) GetByID() gin.HandlerFunc {
 	}
 }
 
-func validateEmptys(dentista *domain.Dentista) (bool, error) {
-	switch {
-	case dentista.Nombre == "" || dentista.Apellido == "" || dentista.Matricula == "":
-		return false, errors.New("Fields can't be empty")
-	}
-	return true, nil
-}
-
 // Post crea un nuevo dentista
 func (h *dentistaHandler) Post() gin.HandlerFunc {
 	return func(c *gin.Context) {
+		if err := ValidateToken(c); err != nil {
+			web.Failure(c, 400, err)
+			return
+		}
+
 		var dentista domain.Dentista
-		token := c.GetHeader("TOKEN")
-		if token == "" {
-			web.Failure(c, 401, errors.New("Token not found"))
-			return
-		}
-		if token != os.Getenv("TOKEN") {
-			web.Failure(c, 401, errors.New("Invalid token"))
-			return
-		}
 
 		err := c.ShouldBindJSON(&dentista)
 		if err != nil {
 			web.Failure(c, 400, errors.New("Invalid json"))
 			return
 		}
-		valid, err := validateEmptys(&dentista)
+		valid, err := ValidateEmptyDentista(&dentista)
 		if !valid {
 			web.Failure(c, 400, err)
 			return
@@ -97,15 +68,11 @@ func (h *dentistaHandler) Post() gin.HandlerFunc {
 
 func (h *dentistaHandler) Delete() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		token := c.GetHeader("TOKEN")
-		if token == "" {
-			web.Failure(c, 401, errors.New("Token not found"))
+		if err := ValidateToken(c); err != nil {
+			web.Failure(c, 400, err)
 			return
 		}
-		if token != os.Getenv("TOKEN") {
-			web.Failure(c, 401, errors.New("Invalid token"))
-			return
-		}
+
 		idParam := c.Param("id")
 		id, err := strconv.Atoi(idParam)
 		if err != nil {
@@ -123,15 +90,11 @@ func (h *dentistaHandler) Delete() gin.HandlerFunc {
 
 func (h *dentistaHandler) Put() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		token := c.GetHeader("TOKEN")
-		if token == "" {
-			web.Failure(c, 401, errors.New("Token not found"))
+		if err := ValidateToken(c); err != nil {
+			web.Failure(c, 400, err)
 			return
 		}
-		if token != os.Getenv("TOKEN") {
-			web.Failure(c, 401, errors.New("Invalid token"))
-			return
-		}
+
 		idParam := c.Param("id")
 		id, err := strconv.Atoi(idParam)
 		if err != nil {
@@ -153,7 +116,7 @@ func (h *dentistaHandler) Put() gin.HandlerFunc {
 			web.Failure(c, 400, errors.New("Invalid json"))
 			return
 		}
-		valid, err := validateEmptys(&dentista)
+		valid, err := ValidateEmptyDentista(&dentista)
 		if !valid {
 			web.Failure(c, 400, err)
 			return
@@ -174,15 +137,11 @@ func (h *dentistaHandler) Patch() gin.HandlerFunc {
 		Matricula string `json:"matricula" binding:"-"`
 	}
 	return func(c *gin.Context) {
-		token := c.GetHeader("TOKEN")
-		if token == "" {
-			web.Failure(c, 401, errors.New("Token not found"))
+		if err := ValidateToken(c); err != nil {
+			web.Failure(c, 400, err)
 			return
 		}
-		if token != os.Getenv("TOKEN") {
-			web.Failure(c, 401, errors.New("Invalid token"))
-			return
-		}
+
 		var r Request
 		idParam := c.Param("id")
 		id, err := strconv.Atoi(idParam)

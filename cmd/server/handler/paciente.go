@@ -39,14 +39,6 @@ func (h *pacienteHandler) GetByID() gin.HandlerFunc {
 	}
 }
 
-func validateEmptyPacientes(paciente *domain.Paciente) (bool, error) {
-	switch {
-	case paciente.Nombre == "" || paciente.Apellido == "" || paciente.Domicilio == "" || paciente.DNI < 0 || paciente.Alta == "":
-		return false, errors.New("Fields can't be empty")
-	}
-	return true, nil
-}
-
 func (h *pacienteHandler) Post() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		var paciente domain.Paciente

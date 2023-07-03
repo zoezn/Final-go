@@ -41,14 +41,6 @@ func (h *turnoHandler) GetByID() gin.HandlerFunc {
 	}
 }
 
-func validateEmptyTurnos(turno *domain.Turno) (bool, error) {
-	switch {
-	case turno.Dentista.Id == 0 || turno.Paciente.Id == 0 || turno.Fecha == "" || turno.Hora == "" || turno.Descripcion == "":
-		return false, errors.New("Fields can't be empty")
-	}
-	return true, nil
-}
-
 func (h *turnoHandler) Post() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		var turno domain.Turno
@@ -67,7 +59,7 @@ func (h *turnoHandler) Post() gin.HandlerFunc {
 			web.Failure(c, 400, errors.New("Invalid json"))
 			return
 		}
-		valid, err := validateEmptyTurnos(&turno)
+		valid, err := ValidateEmptyTurnos(&turno)
 		if !valid {
 			web.Failure(c, 400, err)
 			return
@@ -139,7 +131,7 @@ func (h *turnoHandler) Put() gin.HandlerFunc {
 			web.Failure(c, 400, errors.New("Invalid json"))
 			return
 		}
-		valid, err := validateEmptyTurnos(&turno)
+		valid, err := ValidateEmptyTurnos(&turno)
 		if !valid {
 			web.Failure(c, 400, err)
 			return
