@@ -242,13 +242,41 @@ const docTemplate = `{
                 }
             }
         },
+        "/turnos": {
+            "get": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Turno"
+                ],
+                "summary": "Obtener turno por dni de paciente.",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "dni del paciente",
+                        "name": "dni",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/web.Response"
+                        }
+                    }
+                }
+            }
+        },
         "/turnos/:id": {
             "get": {
                 "produces": [
                     "application/json"
                 ],
                 "tags": [
-                    "Turnos"
+                    "Turno"
                 ],
                 "summary": "Buscar turno por Id.",
                 "responses": {
@@ -285,6 +313,25 @@ const docTemplate = `{
                     "Turno"
                 ],
                 "summary": "Eliminar turno por Id.",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/web.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/turnos/noids": {
+            "post": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Turno"
+                ],
+                "summary": "Crear turno por matricula dentista y id paciente.",
                 "responses": {
                     "200": {
                         "description": "OK",

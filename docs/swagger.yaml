@@ -154,6 +154,24 @@ paths:
       summary: Actualizar campos deseados de turno por Id.
       tags:
       - Turno
+  /turnos:
+    get:
+      parameters:
+      - description: dni del paciente
+        in: query
+        name: dni
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/web.Response'
+      summary: Obtener turno por dni de paciente.
+      tags:
+      - Turno
   /turnos/:id:
     delete:
       produces:
@@ -176,7 +194,7 @@ paths:
             $ref: '#/definitions/web.Response'
       summary: Buscar turno por Id.
       tags:
-      - Turnos
+      - Turno
     put:
       produces:
       - application/json
@@ -186,6 +204,18 @@ paths:
           schema:
             $ref: '#/definitions/web.Response'
       summary: Actualizar turno por Id.
+      tags:
+      - Turno
+  /turnos/noids:
+    post:
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/web.Response'
+      summary: Crear turno por matricula dentista y id paciente.
       tags:
       - Turno
 swagger: "2.0"

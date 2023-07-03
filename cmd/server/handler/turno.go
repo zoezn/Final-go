@@ -47,9 +47,10 @@ func (h *turnoHandler) GetByID() gin.HandlerFunc {
 
 // @Summary Obtener turno por dni de paciente.
 // @Tags Turno
+// @Param dni query int true "dni del paciente"
 // @Produce json
 // @Success 200 {object} web.Response
-// @Router /turnos?dni [get]
+// @Router /turnos [get]
 func (h *turnoHandler) GetByDNI() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		// dniParam := c.Param("dni")
